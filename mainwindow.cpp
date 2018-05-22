@@ -6,74 +6,57 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    initializeServer();
-    initializeClient();
+    initializeChat();
 }
 //******************************************************************************
-void MainWindow::initializeServer()
+void MainWindow::initializeChat()
 {
+    ui->statusBar->showMessage("No connection!");
+    socket = new QTcpSocket(this);
     server = new QTcpServer(this);
     if (!server->listen(QHostAddress::Any,1234))
-        ui->textBrowser->append("Cannot connect to server!");
+        ui->textBrowser->append("Cannot listen!");
     else
-        ui->textBrowser->append("Server started!");
-    connect(server,SIGNAL(newConnection()),this,SLOT(newServerConnection()));
+        ui->textBrowser->append("Listening...");
+    connect(server,SIGNAL(newConnection()),this,SLOT(incomingMessage()));
+    connect(ui->lineEditSend,SIGNAL(returnPressed()),
+            ui->pushButtonSend,SLOT(click()));
 }
-void MainWindow::newServerConnection()
-{
-    socket = new QTcpSocket(this);
+void MainWindow::incomingMessage()
+{   
     socket = server->nextPendingConnection();
     socket->waitForReadyRead(3000);
-    ui->textBrowser->append(socket->readAll());
-    socket->write("Windows: Hello");
-    socket->flush();
-    socket->waitForBytesWritten(3000);
+    ui->textBrowser->setTextColor(Qt::blue);
+    ui->textBrowser->append("Dia: " + socket->readAll());
     socket->close();
 }
 //********************************************************************************
-void MainWindow::initializeClient()
+
+void MainWindow::on_pushButtonSend_clicked()
 {
-    client = new QTcpSocket(this);
-    connect(client,SIGNAL(connected()),this,SLOT(connected()));
-    connect(client,SIGNAL(disconnected()),this,SLOT(disconnected()));
-    connect(client,SIGNAL(readyRead()),this,SLOT(socketRead()));
-    connect(client,SIGNAL(bytesWritten(qint64)),this,SLOT(socketWrite(qint64)));
-}
-void MainWindow::on_pushButtonConnect_clicked()
-{
-    ui->textBrowser->append("Connecting...");
-    client->connectToHost(ui->lineEdit->text(),1234);
-    if (!client->waitForConnected(2000))
+    socket->connectToHost(ui->lineEdit->text(),1234);
+    if (!socket->waitForConnected(1000))
+    {
         ui->textBrowser->append("Fail to connect.");
+        ui->statusBar->showMessage("No connection!");
+    }
     else
-        ui->textBrowser->append("Connected at:" + ui->lineEdit->text());
+    {
+        ui->statusBar->showMessage("Connected at:" +
+                                   socket->peerAddress().toString().toUtf8());
+        socket->write(ui->lineEditSend->text().toUtf8());
+        socket->flush();
+        socket->waitForBytesWritten(1000);
+        ui->textBrowser->setTextColor(Qt::red);
+        ui->textBrowser->append("Aku: " + ui->lineEditSend->text().toUtf8());
+    }
+    socket->close();
 }
-void MainWindow::connected()
-{
-    ui->textBrowser->append("Connected");    
-}
-void MainWindow::disconnected()
-{
-    ui->textBrowser->append("Disconnected");
-}
-void MainWindow::socketRead() //client
-{
-    ui->textBrowser->append(client->readAll());
-}
-void MainWindow::socketWrite(qint64 bytes) //client
-{
-    client->write("Windows: Hello");
-    ui->textBrowser->append("We write " + QString::number(bytes));
-}
-void MainWindow::on_pushButtonSend_clicked() //client
-{
-    QString msg = ui->lineEditSend->text();
-    client->write(msg.toUtf8());
-}
+
 //********************************************************************************
 MainWindow::~MainWindow()
 {
-    client->close();
     server->close();
+    socket->close();
     delete ui;
 }

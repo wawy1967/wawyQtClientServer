@@ -17,21 +17,14 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void initializeServer();
-    void initializeClient();
+    void initializeChat();
 private slots:
-    void connected();
-    void disconnected();
-    void socketRead();
-    void socketWrite(qint64);
-    void on_pushButtonConnect_clicked();
     void on_pushButtonSend_clicked();
-    void newServerConnection();
+    void incomingMessage();
 
 private:
     Ui::MainWindow *ui;
     QTcpServer *server;
-    QTcpSocket *client;
     QTcpSocket *socket;
 };
 

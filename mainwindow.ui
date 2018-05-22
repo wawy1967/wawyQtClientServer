@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>491</height>
+    <width>562</width>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Client</string>
+   <string>Chat@1.0</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>351</width>
-      <height>311</height>
+      <width>511</width>
+      <height>501</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -34,19 +34,16 @@
      <item>
       <widget class="QLineEdit" name="lineEdit">
        <property name="text">
-        <string>localhost</string>
+        <string>192.168.0.102</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonConnect">
+      <widget class="QLineEdit" name="lineEditSend">
        <property name="text">
-        <string>Connect</string>
+        <string>Hai from Windows</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QTextBrowser" name="textBrowser"/>
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonSend">
@@ -56,7 +53,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditSend"/>
+      <widget class="QTextBrowser" name="textBrowser"/>
      </item>
     </layout>
    </widget>
@@ -66,7 +63,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>562</width>
      <height>21</height>
     </rect>
    </property>
