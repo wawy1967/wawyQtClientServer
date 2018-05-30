@@ -26,6 +26,7 @@ void MainWindow::incomingMessage()
 {   
     socket = server->nextPendingConnection();
     socket->waitForReadyRead(3000);
+    Beep(1000,500);
     ui->textBrowser->setTextColor(Qt::blue);
     ui->textBrowser->append("Dia: " + socket->readAll());
     socket->close();
@@ -49,6 +50,7 @@ void MainWindow::on_pushButtonSend_clicked()
         socket->waitForBytesWritten(1000);
         ui->textBrowser->setTextColor(Qt::red);
         ui->textBrowser->append("Aku: " + ui->lineEditSend->text().toUtf8());
+        ui->lineEditSend->clear();
     }
     socket->close();
 }

@@ -27,16 +27,26 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Host</string>
+        <string>Friend</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit">
        <property name="text">
-        <string>192.168.0.102</string>
+        <string>127.0.0.1</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Chat Messages</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextBrowser" name="textBrowser"/>
      </item>
      <item>
       <widget class="QLineEdit" name="lineEditSend">
@@ -51,9 +61,6 @@
         <string>Send</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QTextBrowser" name="textBrowser"/>
      </item>
     </layout>
    </widget>
